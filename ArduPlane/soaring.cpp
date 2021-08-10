@@ -14,12 +14,12 @@ void Plane::update_soaring() {
     bool override_disable = mission.get_in_landing_sequence_flag();
 
     plane.g2.soaring_controller.update_active_state(override_disable);
+    
+    g2.soaring_controller.update_vario();
 
     if (!g2.soaring_controller.is_active()) {
         return;
     }
-    
-    g2.soaring_controller.update_vario();
 
     if (control_mode == &mode_thermal) {
         // We are currently thermalling; suppress throttle and update
