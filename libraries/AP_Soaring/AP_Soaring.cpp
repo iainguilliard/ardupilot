@@ -139,6 +139,41 @@ const AP_Param::GroupInfo SoaringController::var_info[] = {
     // @Units: deg
     AP_GROUPINFO("THML_BANK", 18, SoaringController, thermal_bank, 30.0),
 
+    // @Param: INIT_W
+    // @DisplayName: Initial thermal strength
+    // @Description: Initial estimate of thermal strength.
+    // @Range: 0 10
+    // @User: Advanced
+    AP_GROUPINFO("INIT_W", 19, SoaringController, inital_thermal_strength, 2.0f),
+
+    // @Param: INIT_R
+    // @DisplayName: Initial thermal radius
+    // @Description: Initial estimate of thermal radius.
+    // @Range: 10 150
+    // @User: Advanced
+    AP_GROUPINFO("INIT_R", 20, SoaringController, inital_thermal_radius, 80.0f),
+
+    // @Param: INIT_W_COV
+    // @DisplayName: Initial stength covariance
+    // @Description: Initial estimate of thermal strength covarience.
+    // @Range: 0.001 1
+    // @User: Advanced
+    AP_GROUPINFO("INIT_W_COV", 21, SoaringController, initial_stength_covariance, 0.0049f),
+
+    // @Param: INIT_R_COV
+    // @DisplayName: Initial radius covariance
+    // @Description: Initial estimate of thermal radius covarience.
+    // @Range: 1 1000
+    // @User: Advanced
+    AP_GROUPINFO("INIT_R_COV", 22, SoaringController, initial_radius_covariance, 400.0f),
+
+    // @Param: INIT_POS_COV
+    // @DisplayName: Initial position covariance
+    // @Description: Initial estimate of thermal position covarience.
+    // @Range: 1 1000
+    // @User: Advanced
+    AP_GROUPINFO("INIT_POS_COV", 23, SoaringController, initial_position_covariance, 400.0f),
+
     AP_GROUPEND
 };
 
@@ -238,10 +273,10 @@ void SoaringController::init_thermalling()
 
     const MatrixN<float,4> q{init_q};
 
-    const float init_p[4] = {INITIAL_STRENGTH_COVARIANCE,
-                             INITIAL_RADIUS_COVARIANCE,
-                             INITIAL_POSITION_COVARIANCE,
-                             INITIAL_POSITION_COVARIANCE};
+    const float init_p[4] = {initial_stength_covariance,
+                             initial_radius_covariance,
+                             initial_position_covariance,
+                             initial_position_covariance};
 
     const MatrixN<float,4> p{init_p};
 
@@ -253,8 +288,8 @@ void SoaringController::init_thermalling()
     }
 
     // New state vector filter will be reset. Thermal location is placed in front of a/c
-    const float init_xr[4] = {INITIAL_THERMAL_STRENGTH,
-                              INITIAL_THERMAL_RADIUS,
+    const float init_xr[4] = {inital_thermal_strength,
+                              inital_thermal_radius,
                               position.x + thermal_distance_ahead * cosf(_ahrs.yaw),
                               position.y + thermal_distance_ahead * sinf(_ahrs.yaw)};
 

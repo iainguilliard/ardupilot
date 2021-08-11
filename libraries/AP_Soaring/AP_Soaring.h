@@ -22,12 +22,6 @@
 
 #if HAL_SOARING_ENABLED
 
-#define INITIAL_THERMAL_STRENGTH 2.0
-#define INITIAL_THERMAL_RADIUS 80.0
-#define INITIAL_STRENGTH_COVARIANCE 0.0049
-#define INITIAL_RADIUS_COVARIANCE 400.0
-#define INITIAL_POSITION_COVARIANCE 400.0
-
 
 class SoaringController {
     ExtendedKalmanFilter _ekf{};
@@ -76,6 +70,11 @@ protected:
     AP_Float alt_cutoff;
     AP_Float max_drift;
     AP_Float thermal_bank;
+    AP_Float inital_thermal_strength;
+    AP_Float inital_thermal_radius;
+    AP_Float initial_stength_covariance;
+    AP_Float initial_radius_covariance;
+    AP_Float initial_position_covariance;
 
 public:
     SoaringController(AP_SpdHgtControl &spdHgt, const AP_Vehicle::FixedWing &parms);
