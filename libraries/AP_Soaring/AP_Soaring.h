@@ -75,6 +75,7 @@ protected:
     AP_Float initial_stength_covariance;
     AP_Float initial_radius_covariance;
     AP_Float initial_position_covariance;
+    AP_Float min_thermal_radius;
 
 public:
     SoaringController(AP_SpdHgtControl &spdHgt, const AP_Vehicle::FixedWing &parms);

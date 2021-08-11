@@ -174,6 +174,13 @@ const AP_Param::GroupInfo SoaringController::var_info[] = {
     // @User: Advanced
     AP_GROUPINFO("INIT_POS_COV", 23, SoaringController, initial_position_covariance, 400.0f),
 
+    // @Param: MIN_THML_R
+    // @DisplayName: Minimum thermal radius
+    // @Description: Minimum size allowed for estimated thermal radius. Set to -1 to disable.
+    // @Range: -1 100
+    // @User: Advanced
+    AP_GROUPINFO("MIN_THML_R", 24, SoaringController, min_thermal_radius, 0.0f),
+    
     AP_GROUPEND
 };
 
@@ -296,7 +303,7 @@ void SoaringController::init_thermalling()
     const VectorN<float,4> xr{init_xr};
 
     // Also reset covariance matrix p so filter is not affected by previous data
-    _ekf.reset(xr, p, q, r);
+    _ekf.reset(xr, p, q, r, min_thermal_radius);
 
     _prev_update_time = AP_HAL::micros64();
     _thermal_start_time_us = AP_HAL::micros64();

@@ -19,9 +19,10 @@ public:
     MatrixN<float,N> P;
     MatrixN<float,N> Q;
     float R;
-    void reset(const VectorN<float,N> &x, const MatrixN<float,N> &p, const MatrixN<float,N> q, float r);
+    void reset(const VectorN<float,N> &x, const MatrixN<float,N> &p, const MatrixN<float,N> q, float r, float min_thermal_radius);
     void update(float z, float Px, float Py, float driftX, float driftY);
 
 private:
     float measurementpredandjacobian(VectorN<float,N> &A, float Px, float Py);
+    float _min_thermal_radius = 0;
 };

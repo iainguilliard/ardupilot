@@ -20,12 +20,13 @@ float ExtendedKalmanFilter::measurementpredandjacobian(VectorN<float,N> &A, floa
 }
 
 
-void ExtendedKalmanFilter::reset(const VectorN<float,N> &x, const MatrixN<float,N> &p, const MatrixN<float,N> q, float r)
+void ExtendedKalmanFilter::reset(const VectorN<float,N> &x, const MatrixN<float,N> &p, const MatrixN<float,N> q, float r, float min_thermal_radius)
 {
     P = p;
     X = x;
     Q = q;
     R = r;
+    _min_thermal_radius = min_thermal_radius;
 }
 
 
@@ -69,7 +70,9 @@ void ExtendedKalmanFilter::update(float z, float Px, float Py, float driftX, flo
     X += K * (z - z1);
 
     // Make sure X[1] stays positive.
-    X[1] = X[1]>40.0 ? X[1]: 40.0;
+    if (_min_thermal_radius >= 0) {
+        X[1] = X[1] > _min_thermal_radius ? X[1]: _min_thermal_radius;
+    }
 
     // Correct the covariance too.
     // LINE 46
